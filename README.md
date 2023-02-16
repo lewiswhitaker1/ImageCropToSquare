@@ -4,7 +4,7 @@ Incredibly simple Java based Image Cropper, scales images to 1000px on their lon
 ## Usage
 This is only to be ran through terminal / command prompt / powershell
 
-```
+```powershell
 java -jar cropper.jar <path/to/image.png>
 ```
 
