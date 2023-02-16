@@ -26,6 +26,7 @@ public class Cropper {
             registerIcons(frame);
             frame.toFront();
             frame.requestFocus();
+            frame.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

@@ -135,6 +135,22 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
         }
         cropBox.setSize(width, height);
 
+        if(cropBox.getWidth() < 0 || cropBox.getHeight() < 0)
+        {
+            cropBox.x = image.getWidth() / 2;
+            cropBox.y = image.getHeight() / 2;
+            cropBox.setSize(10, 10);
+        }
+
+        if (cropBox.x + cropBox.width > image.getWidth()) {
+            cropBox.x = image.getWidth() / 2;
+            cropBox.setSize(10, 10);
+        }
+        if (cropBox.y + cropBox.height > image.getHeight()) {
+            cropBox.y = image.getHeight() / 2;
+            cropBox.setSize(10, 10);
+        }
+
         saveButton.setVisible(true);
         repaint();
     }
@@ -160,6 +176,22 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
             height = width;
         }
         cropBox.setSize(width, height);
+
+        if(cropBox.getWidth() < 0 || cropBox.getHeight() < 0)
+        {
+            cropBox.x = image.getWidth() / 2;
+            cropBox.y = image.getHeight() / 2;
+            cropBox.setSize(10, 10);
+        }
+
+        if (cropBox.x + cropBox.width > image.getWidth()) {
+            cropBox.x = image.getWidth() / 2;
+            cropBox.setSize(10, 10);
+        }
+        if (cropBox.y + cropBox.height > image.getHeight()) {
+            cropBox.y = image.getHeight() / 2;
+            cropBox.setSize(10, 10);
+        }
 
         repaint();
     }
