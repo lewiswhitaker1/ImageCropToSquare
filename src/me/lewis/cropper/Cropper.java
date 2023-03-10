@@ -21,7 +21,7 @@ public class Cropper {
 
         try {
             BufferedImage image = openImage(new File(args[0]));
-            ImageCropper cropper = new ImageCropper(image, true);
+            ImageCropper cropper = new ImageCropper(image);
             JFrame frame = new JFrame("Cropper");
             frame.setName("Cropper");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
