@@ -1,11 +1,16 @@
 package me.lewis.cropper;
 
+import com.luciad.imageio.webp.WebPReadParam;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.spi.IIORegistry;
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 
 public class Cropper {
@@ -52,8 +57,26 @@ public class Cropper {
         frame.setIconImages(imageList);
     }
 
+    public static BufferedImage decodeWebP(File file) throws IOException {
+        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
+
+        WebPReadParam readParam = new WebPReadParam();
+        readParam.setBypassFiltering(true);
+
+        reader.setInput(new FileImageInputStream(new File(file.getPath())));
+
+        return reader.read(0, readParam);
+    }
+
     public static BufferedImage openImage(File file) throws IOException {
-        BufferedImage img = ImageIO.read(file);
+        BufferedImage img;
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf(".");
+        String extension = fileName.substring(dotIndex + 1);
+        if(extension.equalsIgnoreCase("webp"))
+        {
+            img = decodeWebP(file);
+        } else img = ImageIO.read(file);
         int width = img.getWidth();
         int height = img.getHeight();
         double aspectRatio = (double) width / height;
