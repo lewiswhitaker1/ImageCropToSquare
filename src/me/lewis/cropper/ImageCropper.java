@@ -2,6 +2,7 @@ package me.lewis.cropper;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
@@ -16,6 +17,7 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
     private Rectangle cropBox;
     private boolean dragging;
     private JButton saveButton;
+    private JButton rotateButton;
 
     public ImageCropper(BufferedImage image, boolean maintainAspectRatio) {
         this.image = image;
@@ -25,18 +27,39 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
         setBackground(Color.WHITE);
         addMouseListener(this);
         addMouseMotionListener(this);
+        rotateButton = new JButton("Rotate");
+        rotateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage rotatedImage = rotateImage(image, 90);
+                ImageCropper cropper = new ImageCropper(rotatedImage, true);
+
+                Window[] windows = Window.getWindows();
+                for(Window window : windows)
+                {
+                    if(window instanceof JFrame)
+                    {
+                        JFrame frame = (JFrame) window;
+                        if(frame.getName().equalsIgnoreCase("cropper"))
+                        {
+                            frame.setContentPane(cropper);
+                            frame.pack();
+                            repaint();
+                        }
+                    }
+                }
+            }
+        });
         saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 saveImage();
             }
         });
-        saveButton.setFont(new Font("Arial", Font.BOLD,15));
-        saveButton.setOpaque(true);
-        saveButton.setBackground(Color.WHITE);
-        saveButton.setForeground(Color.BLACK);
-        saveButton.setFocusPainted(false);
+        buttonDesign(saveButton);
+        buttonDesign(rotateButton);
         add(saveButton);
+        add(rotateButton);
     }
 
     public void setAspectRatio(int width, int height) {
@@ -213,5 +236,35 @@ public class ImageCropper extends JPanel implements MouseListener, MouseMotionLi
                 ex.printStackTrace();
             }
         }
+    }
+
+    private BufferedImage rotateImage(BufferedImage image, double angle) {
+        double radians = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(radians));
+        double cos = Math.abs(Math.cos(radians));
+        int w = image.getWidth();
+        int h = image.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, image.getType());
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+        at.rotate(radians, w / 2, h / 2);
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        return rotated;
+    }
+
+    public static void buttonDesign(JButton button)
+    {
+        button.setFont(new Font("Arial", Font.BOLD,15));
+        button.setOpaque(true);
+        button.setBackground(Color.WHITE);
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
     }
 }

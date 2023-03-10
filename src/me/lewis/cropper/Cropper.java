@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-import javax.imageio.spi.IIORegistry;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 
@@ -24,6 +23,7 @@ public class Cropper {
             BufferedImage image = openImage(new File(args[0]));
             ImageCropper cropper = new ImageCropper(image, true);
             JFrame frame = new JFrame("Cropper");
+            frame.setName("Cropper");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setContentPane(cropper);
             frame.pack();
