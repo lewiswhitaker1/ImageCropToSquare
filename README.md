@@ -10,5 +10,4 @@ java -jar cropper.jar <path/to/image.png>
 
 ## Video demonstrating basic usability
 
-https://user-images.githubusercontent.com/125030616/219430267-39e94fe7-a6b9-4726-a718-1a73f6194750.mp4
-
+https://user-images.githubusercontent.com/125030616/228883644-cc244137-ab9c-4865-8e8e-529ef24b612d.mp4
